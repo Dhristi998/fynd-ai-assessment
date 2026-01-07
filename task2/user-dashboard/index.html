@@ -5,6 +5,7 @@
 </head>
 <body>
   <h2>Submit Review</h2>
+<h1 style="color:red">USER DASHBOARD LOADED</h1>
 
   <label>Rating:</label>
   <select id="rating">
@@ -35,6 +36,8 @@
   </div>
 
   <script>
+    alert("User dashboard JS loaded");
+
     async function submitReview() {
       const rating = document.getElementById("rating").value;
       const review = document.getElementById("review").value;
