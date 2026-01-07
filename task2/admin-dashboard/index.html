@@ -10,7 +10,7 @@
 
   <script>
     async function load() {
-      const res = await fetch("BACKEND_URL/api/reviews");
+      const res = await fetch("https://fynd-backend-tl8g.onrender.com");
       const data = await res.json();
       document.getElementById("out").innerText =
         JSON.stringify(data, null, 2);
