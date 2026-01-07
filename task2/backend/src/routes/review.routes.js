@@ -3,8 +3,8 @@ import Review from "../models/Review.js";
 import { callLLM } from "../services/llm.service.js";
 
 const router = express.Router();
-
-router.post("/submit", async (req, res) => {
+// POST a review
+router.post("/", async (req, res) => {
   const { rating, review } = req.body;
 
   if (!review || review.trim() === "") {
@@ -38,7 +38,8 @@ router.post("/submit", async (req, res) => {
   }
 });
 
-router.get("/reviews", async (req, res) => {
+// GET all reviews
+router.get("/", async (req, res) => {
   const data = await Review.find().sort({ createdAt: -1 });
   res.json(data);
 });
