@@ -12,19 +12,27 @@ router.post("/", async (req, res) => {
     return res.status(400).json({ error: "Review cannot be empty" });
   }
 
+  let aiResponse = "Thank you for your feedback!";
+  let summary = "Customer feedback received.";
+  let action = "Review customer feedback.";
+
   try {
-    const aiResponse = await callLLM(
+    aiResponse = await callLLM(
       `Write a polite response to this customer review:\n${review}`
     );
 
-    const summary = await callLLM(
+    summary = await callLLM(
       `Summarize this review in one sentence:\n${review}`
     );
 
-    const action = await callLLM(
+    action = await callLLM(
       `Suggest one business action based on this review:\n${review}`
     );
+  } catch (e) {
+    console.error("LLM failed, using fallback");
+  }
 
+  try {
     const saved = await Review.create({
       rating,
       review,
@@ -34,16 +42,20 @@ router.post("/", async (req, res) => {
     });
 
     res.json(saved);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "LLM failed" });
+  } catch (dbErr) {
+    console.error("DB save failed:", dbErr);
+    res.status(500).json({ error: "Database save failed" });
   }
 });
 
 // GET /api/reviews
 router.get("/", async (req, res) => {
-  const data = await Review.find().sort({ createdAt: -1 });
-  res.json(data);
+  try {
+    const data = await Review.find().sort({ createdAt: -1 });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch reviews" });
+  }
 });
 
 export default router;
