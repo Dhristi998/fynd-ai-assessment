@@ -1,66 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Submit Review</title>
+  <title>User Dashboard</title>
 </head>
 <body>
+  <h2>Submit Review</h2>
 
-<h2>Submit Review</h2>
+  <label>Rating:</label>
+  <select id="rating">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+  <br /><br />
 
-<select id="rating">
-  <option>1</option>
-  <option>2</option>
-  <option>3</option>
-  <option>4</option>
-  <option selected>5</option>
-</select>
+  <textarea
+    id="review"
+    rows="4"
+    cols="50"
+    placeholder="Write your review here..."
+  ></textarea>
+  <br /><br />
 
-<br><br>
+  <button onclick="submitReview()">Submit</button>
 
-<textarea id="review" rows="4" cols="40"></textarea>
+  <h3>AI Response</h3>
+  <div
+    id="aiResponseBox"
+    style="border:1px solid #ccc; padding:10px; min-height:50px;"
+  >
+    Waiting for AI response...
+  </div>
 
-<br><br>
+  <script>
+    async function submitReview() {
+      const rating = document.getElementById("rating").value;
+      const review = document.getElementById("review").value;
 
-<button onclick="submitReview()">Submit</button>
-<h3>AI Response</h3>
-<div id="aiResponse" style="border:1px solid #ccc; padding:10px;"></div>
+      const res = await fetch(
+        "https://fynd-backend-tl8g.onrender.com/api/reviews",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rating, review })
+        }
+      );
 
-<p id="response"></p>
+      const data = await res.json();
 
-<script>
-async function submitReview() {
-  const rating = document.getElementById("rating").value;
-  const review = document.getElementById("review").value;
+      console.log("API response:", data); // 👈 IMPORTANT
 
-  try {
-    const res = await fetch(
-      "https://fynd-backend-tl8g.onrender.com/api/reviews",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          rating: Number(rating),
-          review
-        })
+      if (!res.ok) {
+        document.getElementById("aiResponseBox").innerText =
+          "Submission failed.";
+        return;
       }
-    );
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert("Backend error: " + JSON.stringify(data));
-      return;
+      document.getElementById("aiResponseBox").innerHTML = `
+        <p><strong>AI Reply:</strong> ${data.aiResponse}</p>
+        <p><strong>Summary:</strong> ${data.summary}</p>
+        <p><strong>Suggested Action:</strong> ${data.action}</p>
+      `;
     }
-
-    alert("Review submitted successfully!");
-    document.getElementById("review").value = "";
-  } catch (e) {
-    alert("Network error: " + e.message);
-  }
-}
-</script>
-
+  </script>
 </body>
 </html>
