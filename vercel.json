@@ -1,0 +1,12 @@
+{
+  "projects": [
+    {
+      "rootDirectory": "task2/admin-dashboard",
+      "framework": null
+    },
+    {
+      "rootDirectory": "task2/user-dashboard",
+      "framework": null
+    }
+  ]
+}
