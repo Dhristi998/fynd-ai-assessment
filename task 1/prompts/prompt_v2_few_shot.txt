@@ -1,0 +1,11 @@
+def prompt_v2(review):
+    return f"""
+Examples:
+Review: Amazing food and great service → 5
+Review: Food was cold and rude staff → 2
+
+Now classify:
+Review: "{review}"
+
+Return JSON only.
+"""

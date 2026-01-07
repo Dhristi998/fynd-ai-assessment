@@ -1,0 +1,14 @@
+def prompt_v3(review):
+    return f"""
+Use rubric:
+1 = very negative
+2 = negative
+3 = neutral
+4 = positive
+5 = very positive
+
+Step-by-step decide sentiment, then map to rating.
+
+Return JSON only.
+Review: "{review}"
+"""

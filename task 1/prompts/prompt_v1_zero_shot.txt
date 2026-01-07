@@ -1,0 +1,9 @@
+def prompt_v1(review):
+    return f"""
+Classify this Yelp review into 1–5 stars.
+
+Return JSON only:
+{{"predicted_stars": number, "explanation": "reason"}}
+
+Review: "{review}"
+"""
