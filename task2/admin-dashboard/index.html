@@ -9,12 +9,35 @@
   <pre id="out"></pre>
 
   <script>
-    async function load() {
-      const res = await fetch("https://fynd-backend-tl8g.onrender.com/api/reviews");
-      const data = await res.json();
-      document.getElementById("out").innerText =
-        JSON.stringify(data, null, 2);
-    }
-  </script>
+async function load() {
+  const res = await fetch(
+    "https://fynd-backend-tl8g.onrender.com/api/reviews"
+  );
+  const data = await res.json();
+
+  const out = document.getElementById("out");
+  out.innerHTML = "";
+
+  data.forEach((r, i) => {
+    const block = document.createElement("div");
+    block.style.border = "1px solid #ccc";
+    block.style.padding = "10px";
+    block.style.marginBottom = "10px";
+
+    block.innerHTML = `
+      <h4>Review ${i + 1}</h4>
+      <p><strong>Rating:</strong> ${r.rating}</p>
+      <p><strong>Customer Review:</strong> ${r.review}</p>
+      <p><strong>AI Response:</strong> ${r.aiResponse}</p>
+      <p><strong>Summary:</strong> ${r.summary}</p>
+      <p><strong>Suggested Action:</strong> ${r.action}</p>
+      <small>${new Date(r.createdAt).toLocaleString()}</small>
+    `;
+
+    out.appendChild(block);
+  });
+}
+</script>
+
 </body>
 </html>
