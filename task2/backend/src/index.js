@@ -9,7 +9,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", reviewRoutes);
+app.use("/api/reviews", reviewRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 

@@ -40,21 +40,22 @@ async function submitReview() {
         },
         body: JSON.stringify({
           rating: Number(rating),
-          review: review
+          review
         })
       }
     );
 
+    const data = await res.json();
+
     if (!res.ok) {
-      const text = await res.text();
-      alert("Backend error: " + text);
+      alert("Backend error: " + JSON.stringify(data));
       return;
     }
 
     alert("Review submitted successfully!");
     document.getElementById("review").value = "";
-  } catch (err) {
-    alert("Network error: " + err.message);
+  } catch (e) {
+    alert("Network error: " + e.message);
   }
 }
 </script>

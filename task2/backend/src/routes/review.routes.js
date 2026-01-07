@@ -5,7 +5,7 @@ import { callLLM } from "../services/llm.service.js";
 const router = express.Router();
 
 // POST /api/reviews
-router.post("/reviews", async (req, res) => {
+router.post("/", async (req, res) => {
   const { rating, review } = req.body;
 
   if (!review || review.trim() === "") {
@@ -35,12 +35,13 @@ router.post("/reviews", async (req, res) => {
 
     res.json(saved);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "LLM failed" });
   }
 });
 
 // GET /api/reviews
-router.get("/reviews", async (req, res) => {
+router.get("/", async (req, res) => {
   const data = await Review.find().sort({ createdAt: -1 });
   res.json(data);
 });
